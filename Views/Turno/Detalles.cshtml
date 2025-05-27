@@ -1,0 +1,26 @@
+@model VeterinariaSystem.Models.Turno
+
+@{
+    ViewData["Title"] = "Detalles del Turno";
+}
+
+<h2>Detalles del Turno</h2>
+
+<div>
+    <strong>@Html.DisplayNameFor(model => model.Id)</strong>: @Html.DisplayFor(model => model.Id)
+</div>
+<div>
+    <strong>@Html.DisplayNameFor(model => model.Mascota.Nombre)</strong>: @Html.DisplayFor(model => model.Mascota.Nombre)
+</div>
+<div>
+    <strong>@Html.DisplayNameFor(model => model.Motivo)</strong>: @Html.DisplayFor(model => model.Motivo)
+</div>
+<div>
+    <strong>@Html.DisplayNameFor(model => model.Fecha)</strong>: @Html.DisplayFor(model => model.Fecha)
+</div>
+<div>
+    <strong>@Html.DisplayNameFor(model => model.Hora)</strong>: @Html.DisplayFor(model => model.Hora)
+</div>
+<div>
+    <a href="@Url.Action("Index", "Turno")" class="btn btn-secondary">Volver</a>
+</div>

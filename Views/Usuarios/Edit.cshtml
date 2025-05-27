@@ -1,0 +1,83 @@
+@model VeterinariaSystem.Models.Usuario
+@{
+    ViewData["Title"] = ViewData["Title"] ?? "Editar Perfil";
+    var roles = ViewBag.Roles as IDictionary<int, string>; 
+    bool isAdminEditing = User.IsInRole(nameof(enRoles.Administrador)) && ViewContext.RouteData.Values["action"].ToString().Equals("Edit", StringComparison.OrdinalIgnoreCase);
+    bool isOwnProfile = User.Identity.Name.Equals(Model.Email, StringComparison.OrdinalIgnoreCase);
+}
+<link rel="stylesheet" href="~/css/Usuario/Edit.css" />
+<h1>@ViewData["Title"]</h1>
+
+<h4>Usuario: @Model.Nombre @Model.Apellido</h4>
+
+        <form asp-action="@(isOwnProfile ? "Perfil" : "Edit")" asp-route-id="@Model.Id" enctype="multipart/form-data" class="for">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Clave" />
+            <input type="hidden" asp-for="Avatar" /> 
+            <div class="form-group mb-3">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Apellido" class="control-label"></label>
+                <input asp-for="Apellido" class="form-control" />
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            @if (isAdminEditing && roles != null)
+            {
+                <div class="form-group mb-3">
+                    <label asp-for="Rol" class="control-label"></label>
+                    <select asp-for="Rol" class="form-control" asp-items="@(new SelectList(roles, "Key", "Value", Model.Rol))">
+                        <option value="">Seleccione un Rol</option>
+                    </select>
+                    <span asp-validation-for="Rol" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <input type="hidden" asp-for="Rol" />
+                <div class="form-group mb-3">
+                    <label class="control-label">Rol</label>
+                    <input type="text" class="form-control" value="@Model.RolNombre" readonly/>
+                </div>
+            }
+
+            <div class="form-group mb-3">
+                <label asp-for="AvatarFile" class="control-label">Cambiar Avatar (Opcional)</label>
+                @if (!string.IsNullOrEmpty(Model.Avatar)) {
+                    <img src="@Model.Avatar" alt="Avatar Actual" width="80" class="img-thumbnail d-block mb-2"/>
+                }
+                <input asp-for="AvatarFile" class="form-control" type="file" accept="image/*"/>
+                <span asp-validation-for="AvatarFile" class="text-danger"></span>
+            </div>
+            @if (!string.IsNullOrEmpty(Model.Avatar)) {
+                <div class="mb-2">
+                    <img src="@Model.Avatar" alt="Avatar Actual" width="80" class="img-thumbnail d-block" />
+                    <div class="form-check">
+                        <input type="checkbox" name="EliminarAvatar" class="form-check-input" id="eliminarAvatar" />
+                        <label class="form-check-label" for="eliminarAvatar">Eliminar avatar actual</label>
+                    </div>
+                </div>
+            }
+            <div class="form-group mt-3">
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary" /> |
+                @if (isAdminEditing) {
+                    <a asp-action="Index" class="btn btn-secondary">Volver a la Lista</a>
+                } else {
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                }
+            </div>
+            <a asp-action="CambiarClave" class="btn btn-secondary">Cambiar Contraseña</a>
+        </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

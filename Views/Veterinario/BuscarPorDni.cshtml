@@ -1,0 +1,12 @@
+@{
+    ViewData["Title"] = "Buscar por DNI";
+}
+<h1>Buscar Veterinario por DNI</h1>
+
+<form asp-action="BuscarPorDni" method="post">
+    <div class="form-group">
+        <label for="dni">DNI:</label>
+        <input type="number" name="dni" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>

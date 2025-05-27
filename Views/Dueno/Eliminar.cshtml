@@ -1,0 +1,68 @@
+@{
+    ViewData["Title"] = "Eliminar Dueño";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="app" v-cloak>
+    <h2>Eliminar Dueño</h2>
+
+    <div v-if="mensajeExito" class="alert alert-success">{{ mensajeExito }}</div>
+    <div v-if="mensajeError" class="alert alert-danger">{{ mensajeError }}</div>
+
+    <h4>¿Estás seguro que deseas eliminar a este dueño?</h4>
+
+    <dl class="row">
+        <dt class="col-sm-2">DNI</dt>
+        <dd class="col-sm-10">{{ dueno.dni }}</dd>
+
+        <dt class="col-sm-2">Nombre</dt>
+        <dd class="col-sm-10">{{ dueno.nombre }}</dd>
+
+        <dt class="col-sm-2">Apellido</dt>
+        <dd class="col-sm-10">{{ dueno.apellido }}</dd>
+    </dl>
+
+    <form v-on:submit.prevent="eliminar">
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="/Dueno/Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                dueno: {
+                    id: @Model.Id,
+                    dni: '@Model.DNI',
+                    nombre: '@Model.Nombre',
+                    apellido: '@Model.Apellido'
+                },
+                mensajeError: '',
+                mensajeExito: ''
+            },
+            methods: {
+                eliminar() {
+                    this.mensajeError = '';
+                    this.mensajeExito = '';
+
+                    axios.delete('/api/dueno/' + this.dueno.id)
+                        .then(response => {
+                            this.mensajeExito = 'Dueño eliminado correctamente.';
+                            setTimeout(() => window.location.href = '/Dueno/Index', 1500);
+                        })
+                        .catch(error => {
+                            this.mensajeError = 'Error al eliminar el dueño.';
+                        });
+                }
+            }
+        });
+    </script>
+}
+
+<style>
+[v-cloak] { display: none; }
+</style>

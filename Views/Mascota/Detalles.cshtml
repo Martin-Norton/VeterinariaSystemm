@@ -1,0 +1,37 @@
+@model Mascota
+@{
+    ViewData["Title"] = "Detalles de Mascota";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="mb-3">
+    <strong>Nombre:</strong> @Model.Nombre
+</div>
+<div class="mb-3">
+    <strong>Especie:</strong> @Model.Especie
+</div>
+<div class="mb-3">
+    <strong>Raza:</strong> @Model.Raza
+</div>
+<div class="mb-3">
+    <strong>Edad:</strong> @Model.Edad
+</div>
+<div class="mb-3">
+    <strong>Peso:</strong> @Model.Peso
+</div>
+<div class="mb-3">
+    <strong>Sexo:</strong> @Model.Sexo
+</div>
+<div class="mb-3">
+    <strong>Dueño:</strong> @Model.Dueno?.Nombre , @Model.Dueno?.Apellido
+</div>
+
+<a asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+@if (User.IsInRole("Dueno"))
+{
+    <a asp-action="MisMascotas" class="btn btn-secondary">Volver</a>
+}else
+{
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+}

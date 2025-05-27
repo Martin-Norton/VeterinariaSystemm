@@ -1,0 +1,38 @@
+@model Mascota
+
+<h2>Registrar Nueva Mascota</h2>
+
+<form asp-action="CrearParaDueno" method="post">
+    <div class="form-group">
+        <label asp-for="Nombre"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Especie"></label>
+        <select asp-for="Especie" class="form-select">
+            <option value="Felino">Felino</option>
+            <option value="Canino">Canino</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Raza"></label>
+        <input asp-for="Raza" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Edad"></label>
+        <input asp-for="Edad" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Peso"></label>
+        <input asp-for="Peso" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Sexo"></label>
+        <select asp-for="Sexo" class="form-select">
+            <option value="Macho">Macho</option>
+            <option value="Hembra">Hembra</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>

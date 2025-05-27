@@ -1,0 +1,65 @@
+@model IList<VeterinariaSystem.Models.Consulta>
+
+@{
+    ViewData["Title"] = "Consultas";
+}
+
+<h2>Consultas</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Fecha</th>
+            <th>Motivo</th>
+            <th>Diagnóstico</th>
+            <th>Tratamiento</th>
+            <th>Archivo</th>
+            <th>Mascota</th>
+            <th>Veterinario</th>
+            <th>Turno Nº</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var consulta in Model)
+        {
+            <tr>
+                <td>@consulta.Fecha.ToShortDateString()</td>
+                <td>@consulta.Motivo</td>
+                <td>@consulta.Diagnostico</td>
+                <td>@consulta.Tratamiento</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(consulta.ArchivoAdjunto))
+                    {
+                        <a href="@Url.Content(consulta.ArchivoAdjunto)" target="_blank">Ver archivo</a>
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
+                <td>@consulta.Mascota.Nombre</td>
+                <td>@consulta.Veterinario.Nombre, @consulta.Veterinario.Apellido</td>
+                <td>@(consulta.Id_Turno.HasValue ? consulta.Id_Turno.ToString() : "-")</td>
+                <td>
+                    <a asp-action="Detalles" asp-route-id="@consulta.Id" class="btn btn-info btn-sm">Detalles</a>
+                    <a asp-action="Editar" asp-route-id="@consulta.Id" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="SeleccionarTurno" class="btn btn-primary">Crear consulta</a>
+<a asp-action="Busquedas" class="btn btn-secondary">Buscar consultas</a>
+<div class="mt-4">
+    <nav>
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+            {
+                <li class="page-item @(i == ViewBag.Pagina ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-pagina="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

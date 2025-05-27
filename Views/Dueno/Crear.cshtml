@@ -1,0 +1,96 @@
+@{
+    ViewData["Title"] = "Nuevo Dueño";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="app" v-cloak>
+    <h2>Nuevo Dueño</h2>
+
+    <div v-if="mensajeError" class="alert alert-danger">
+        <ul>
+            <li v-for="error in mensajeError">{{ error }}</li>
+        </ul>
+    </div>
+    <div v-if="mensajeExito" class="alert alert-success">
+        {{ mensajeExito }}
+    </div>
+
+    <form v-on:submit.prevent="guardar">
+        <div class="form-group">
+            <label for="dni">DNI</label>
+            <input type="number" v-model="dueno.dni" id="dni" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" v-model="dueno.nombre" id="nombre" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="apellido">Apellido</label>
+            <input type="text" v-model="dueno.apellido" id="apellido" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="text" v-model="dueno.telefono" id="telefono" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" v-model="dueno.email" id="email" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="/Dueno/Index" class="btn btn-secondary">Volver</a>
+    </form>
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+new Vue({
+    el: '#app',
+    data: {
+        dueno: {
+            dni: '',
+            nombre: '',
+            apellido: '',
+            telefono: '',
+            email: ''
+        },
+        mensajeError: null,
+        mensajeExito: ''
+    },
+    methods: {
+        guardar() {
+            this.mensajeError = null;
+            this.mensajeExito = '';
+            axios.post('/api/dueno', this.dueno)
+                .then(response => {
+                    this.mensajeExito = 'Dueño creado con éxito.';
+                    setTimeout(() => window.location.href = '/Dueno/Index', 1500);
+                })
+                .catch(error => {
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        this.mensajeError = [];
+                        const errors = error.response.data.errors;
+                        for (const key in errors) {
+                            if (errors.hasOwnProperty(key)) {
+                                this.mensajeError.push(...errors[key]);
+                            }
+                        }
+                    } else {
+                        this.mensajeError = ['Error al guardar el dueño.'];
+                    }
+                });
+        }
+    }
+});
+</script>
+}
+
+<style>
+[v-cloak] { display: none; }
+</style>

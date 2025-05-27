@@ -1,0 +1,50 @@
+@model VeterinariaSystem.Models.Usuario
+@{
+    ViewData["Title"] = "Eliminar Usuario";
+}
+<link rel="stylesheet" href="~/css/Usuario/Delete.css" />
+<h1>@ViewData["Title"]</h1>
+
+<h3 class="text-danger">¿Está seguro que desea eliminar este usuario?</h3>
+<div>
+    <h4>Usuario: @Model.Nombre @Model.Apellido (@Model.Email)</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Apellido)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Apellido)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RolNombre)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RolNombre)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" class="for">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Cancelar y Volver a la Lista</a>
+    </form>
+</div>

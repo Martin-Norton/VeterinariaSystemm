@@ -1,0 +1,81 @@
+@model Turno
+@{
+    ViewData["Title"] = "Crear Turno";
+    var esDueno = User.IsInRole("Dueno");
+}
+
+<h2>Crear Turno</h2>
+
+<form asp-action="Crear" method="post">
+    <div class="form-group">
+        @if (!esDueno)
+        {
+            <label for="Id_Dueno">Dueño</label>
+            <select id="Id_Dueno" class="form-control">
+                <option value="">-- Seleccione un dueño --</option>
+                @foreach (var d in ViewBag.Duenos as SelectList)
+                {
+                    <option value="@d.Value">@d.Text</option>
+                }
+            </select>
+        }
+
+        <label asp-for="Id_Mascota">Mascota</label>
+        <select asp-for="Id_Mascota" class="form-control" asp-items="ViewBag.Mascotas">
+            <option value="">-- Seleccione una mascota --</option>
+        </select>
+        <span asp-validation-for="Id_Mascota" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Fecha"></label>
+        <input asp-for="Fecha" class="form-control" type="date" />
+        <span asp-validation-for="Fecha" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+            <label asp-for="Hora"></label>
+            <select asp-for="Hora" class="form-control">
+                <option value="">-- Seleccione una hora --</option>
+                <option value="09:00:00">09:00</option>
+                <option value="11:00:00">11:00</option>
+                <option value="15:00:00">15:00</option>
+                <option value="17:00:00">17:00</option>
+                <option value="19:00:00">19:00</option>
+            </select>
+            <span asp-validation-for="Hora" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Motivo"></label>
+        <input asp-for="Motivo" class="form-control" />
+        <span asp-validation-for="Motivo" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Id_Dueno').change(function () {
+                var idDueno = $(this).val();
+                if (idDueno) {
+                    $.getJSON('/Turno/ObtenerPorDuenoo', { idDueno: idDueno }, function (data) {
+                        var mascotaSelect = $('#Id_Mascota');
+                        mascotaSelect.empty();
+                        mascotaSelect.append('<option value="">-- Seleccione una mascota --</option>');
+                        $.each(data, function (i, mascota) {
+                            mascotaSelect.append($('<option>', {
+                                value: mascota.id,
+                                text: mascota.nombre
+                            }));
+                        });
+                    });
+                } else {
+                    $('#Id_Mascota').empty().append('<option value="">-- Seleccione una mascota --</option>');
+                }
+            });
+        });
+    </script>
+}

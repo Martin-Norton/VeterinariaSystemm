@@ -1,0 +1,39 @@
+@model IEnumerable<Consulta>
+@{
+    var mascota = ViewBag.Mascota as Mascota;
+}
+
+<h2>Historia Clínica de @mascota.Nombre</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Motivo</th>
+            <th>Diagnóstico</th>
+            <th>Tratamiento</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var consulta in Model)
+        {
+            <tr>
+                <td>@consulta.Fecha.ToString("dd/MM/yyyy")</td>
+                <td>@consulta.Motivo</td>
+                <td>@consulta.Diagnostico</td>
+                <td>@consulta.Tratamiento</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="MisMascotas" class="btn btn-secondary">Volver a Mis Mascotas</a>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @for (int i = 1; i <= (int)ViewBag.TotalPaginas; i++)
+        {
+            <li class="page-item @(i == (int)ViewBag.PaginaActual ? "active" : "")">
+                <a class="page-link" asp-action="MisMascotas" asp-route-pagina="@i">@i</a>
+            </li>
+        }
+    </ul>
+</nav>

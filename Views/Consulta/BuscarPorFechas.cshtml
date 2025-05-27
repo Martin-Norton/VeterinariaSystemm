@@ -1,0 +1,79 @@
+@model IList<VeterinariaSystem.Models.Consulta>
+@{
+    ViewData["Title"] = "Buscar consultas por fechas";
+}
+
+<h2>Buscar consultas por rango de fechas</h2>
+
+<form method="get" asp-action="BuscarPorFechas" class="mb-3">
+    <div class="form-group">
+        <label for="fechaInicio">Fecha desde</label>
+        <input type="date" id="fechaInicio" name="fechaInicio" class="form-control" value="@ViewBag.FechaInicio" />
+    </div>
+    <div class="form-group">
+        <label for="fechaFin">Fecha hasta</label>
+        <input type="date" id="fechaFin" name="fechaFin" class="form-control" value="@ViewBag.FechaFin" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+</form>
+
+@if (ViewBag.Mensaje != null)
+{
+    <div class="alert alert-warning">@ViewBag.Mensaje</div>
+}
+else if (Model != null && Model.Any())
+{
+    <table class="table table-bordered table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Motivo</th>
+                <th>Mascota</th>
+                <th>Veterinario</th>
+                <th>Diagnóstico</th>
+                <th>Tratamiento</th>
+                <th>Archivo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var consulta in Model)
+            {
+                <tr>
+                    <td>@consulta.Fecha.ToShortDateString()</td>
+                    <td>@consulta.Motivo</td>
+                    <td>@consulta.Mascota?.Nombre</td>
+                    <td>@consulta.Veterinario?.Nombre @consulta.Veterinario?.Apellido</td>
+                    <td>@consulta.Diagnostico</td>
+                    <td>@consulta.Tratamiento</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(consulta.ArchivoAdjunto))
+                        {
+                            <a href="@Url.Content(consulta.ArchivoAdjunto)" target="_blank">Ver archivo</a>
+                        }
+                        else { <span>-</span> }
+                    </td>
+                    <td>
+                        <a asp-action="Detalles" asp-route-id="@consulta.Id" class="btn btn-info btn-sm">Detalles</a>
+                        <a asp-action="Editar" asp-route-id="@consulta.Id" class="btn btn-warning btn-sm">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+            {
+                <li class="page-item @(i == ViewBag.Pagina ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="BuscarPorFechas"
+                       asp-route-fechaInicio="@ViewBag.FechaInicio"
+                       asp-route-fechaFin="@ViewBag.FechaFin"
+                       asp-route-pagina="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

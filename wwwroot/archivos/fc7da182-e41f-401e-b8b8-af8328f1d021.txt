@@ -1,0 +1,13 @@
+405000 ALQUILER 10/04  PAGO PARCIAL 224000 	
+15580  EXPENSAS 10/04  PAGADO   
+44000  CTV      16/04  PAGADO   
+21000  imp mun  10/04  PAGADO                (1905818 PADRON MUNICIPAL)
+56000  LUZ      10/04  PAGADO 
+15560  GAS      28/04	     
+21000  GIMNASIO 10/04    
+19000  CLARO    01/05  PAGADO   
+21000  Osfatun  15/05
+---------------------------------------------------------------------------------------------------------------
+total = $ 642140
+PAGADO= $ 
+FALTA = $ 

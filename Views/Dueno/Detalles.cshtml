@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "Detalles del Dueño";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="app" v-cloak>
+    <h2>Detalles del Dueño</h2>
+
+    <div v-if="dueno">
+        <p><strong>Código Dueño:</strong> {{ dueno.id }}</p>
+        <p><strong>DNI:</strong> {{ dueno.dni }}</p>
+        <p><strong>Nombre:</strong> {{ dueno.nombre }}</p>
+        <p><strong>Apellido:</strong> {{ dueno.apellido }}</p>
+        <p><strong>Teléfono:</strong> {{ dueno.telefono }}</p>
+        <p><strong>Email:</strong> {{ dueno.email }}</p>
+        <p><strong>Estado:</strong> <span :class="{'text-success': dueno.estado == 1, 'text-danger': dueno.estado == 0}">{{ dueno.estado == 1 ? 'Activo' : 'Inactivo' }}</span></p>
+    </div>
+
+    <div v-else>
+        <p>Cargando datos del dueño...</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            dueno: null
+        },
+        created() {
+            const id = @ViewBag.IdDueno;
+            axios.get(`/api/dueno/${id}`)
+                .then(res => this.dueno = res.data)
+                .catch(err => console.error('Error al obtener el dueño', err));
+        }
+    });
+</script>
+
+<style>
+    [v-cloak] { display: none; }
+</style>

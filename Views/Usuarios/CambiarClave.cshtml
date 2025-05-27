@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Cambiar Contraseña";
+}
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="CambiarClave" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group mb-3">
+        <label for="ClaveActual" class="control-label">Contraseña Actual</label>
+        <input type="password" name="ClaveActual" class="form-control" required />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="NuevaClave" class="control-label">Nueva Contraseña</label>
+        <input type="password" name="NuevaClave" class="form-control" required minlength="6" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="ConfirmarClave" class="control-label">Confirmar Nueva Contraseña</label>
+        <input type="password" name="ConfirmarClave" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+    <a asp-action="Perfil" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

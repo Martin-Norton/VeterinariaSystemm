@@ -1,0 +1,12 @@
+@{
+    ViewData["Title"] = "Buscar por Matrícula";
+}
+<h1>Buscar Veterinario por Matrícula</h1>
+
+<form asp-action="BuscarPorMatricula" method="post">
+    <div class="form-group">
+        <label for="matricula">Matrícula:</label>
+        <input type="text" name="matricula" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>

@@ -1,0 +1,65 @@
+@model Mascota
+@{
+    ViewData["Title"] = "Crear Mascota";
+    var listaDuenos = new SelectList(ViewBag.Duenos, "Id", "Nombre", "Apellido");
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Crear" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Especie" class="form-label"></label>
+        <select asp-for="Especie" class="form-select">
+            <option value="Felino">Felino</option>
+            <option value="Canino">Canino</option>
+        </select>
+        <span asp-validation-for="Especie" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Raza" class="form-label"></label>
+        <input asp-for="Raza" class="form-control" />
+        <span asp-validation-for="Raza" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Edad" class="form-label"></label>
+        <input asp-for="Edad" class="form-control" />
+        <span asp-validation-for="Edad" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Peso" class="form-label"></label>
+        <input asp-for="Peso" class="form-control" />
+        <span asp-validation-for="Peso" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Sexo" class="form-label"></label>
+        <select asp-for="Sexo" class="form-select">
+            <option value="Macho">Macho</option>
+            <option value="Hembra">Hembra</option>
+        </select>
+        <span asp-validation-for="Sexo" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Id_Dueno" class="form-label">Dueño</label>
+        <select asp-for="Id_Dueno" asp-items="listaDuenos" class="form-select">
+            <option value="">Seleccione un dueño</option>
+        </select>
+        <span asp-validation-for="Id_Dueno" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

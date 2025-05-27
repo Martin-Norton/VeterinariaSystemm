@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Seleccionar Turno Existente";
+}
+
+<h2>Seleccionar Turno Existente</h2>
+
+<form asp-action="SeleccionarTurnoExistente" method="post">
+    <div class="form-group">
+        <label for="Id_Dueno">Dueño</label>
+        <select id="Id_Dueno" name="Id_Dueno" class="form-control" asp-items="ViewBag.Duenos">
+            <option value="">-- Seleccione un dueño --</option>
+        </select>
+    </div>
+
+    @if (ViewBag.Mascotas != null)
+    {
+        <div class="form-group">
+            <label for="idMascota">Mascota</label>
+            <select id="idMascota" name="idMascota" class="form-control" asp-items="ViewBag.Mascotas">
+                <option value="">-- Seleccione una mascota --</option>
+            </select>
+        </div>
+    }
+    
+    @if (ViewBag.Turnos != null)
+    {
+        <div class="form-group">
+            <label for="idTurno">Turno</label>
+            <select id="idTurno" name="idTurno" class="form-control" asp-items="ViewBag.Turnos">
+                <option value="">-- Seleccione un turno --</option>
+            </select>
+        </div>
+    }
+    <button type="submit" name="action" value="confirmar">Confirmar Turno</button>
+    <button type="submit" class="btn btn-primary">Continuar</button>
+</form>

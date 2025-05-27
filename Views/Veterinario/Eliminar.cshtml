@@ -1,0 +1,13 @@
+@model VeterinariaSystem.Models.Veterinario
+@{
+    ViewData["Title"] = "Eliminar Veterinario";
+}
+<h1>Eliminar Veterinario</h1>
+
+<h3>¿Está seguro de eliminar al veterinario @Model.Nombre @Model.Apellido?</h3>
+
+<form asp-action="EliminarConfirmado">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

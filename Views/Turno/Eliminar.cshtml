@@ -1,0 +1,16 @@
+@model VeterinariaSystem.Models.Turno
+
+@{
+    ViewData["Title"] = "Eliminar Turno";
+}
+
+<h2>Eliminar Turno</h2>
+
+<div>
+    <p>¿Está seguro de que desea eliminar el turno de la mascota "@Model.Mascota.Nombre"?</p>
+    <form method="post" asp-action="EliminarConfirmado">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="@Url.Action("Index", "Turno")" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

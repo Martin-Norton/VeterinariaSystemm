@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Búsquedas de Consultas";
+}
+
+<h2 class="mb-4">Buscar Consultas</h2>
+
+<div class="card">
+    <div class="card-body">
+        <p class="lead">Seleccioná una opción de búsqueda:</p>
+
+        <div class="d-grid gap-2">
+            <a asp-action="BuscarPorMascota" class="btn btn-primary btn-lg">Buscar por Mascota</a>
+            <a asp-action="BuscarPorVeterinario" class="btn btn-primary btn-lg">Buscar por Veterinario</a>
+            <a asp-action="BuscarPorFechas" class="btn btn-primary btn-lg">Buscar por Rango de Fechas</a>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Volver a la lista de Consultas</a>
+</div>

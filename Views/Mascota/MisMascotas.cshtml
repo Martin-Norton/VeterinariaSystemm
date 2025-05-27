@@ -1,0 +1,41 @@
+@model IEnumerable<Mascota>
+
+<h2>Mis Mascotas</h2>
+
+<a class="btn btn-primary" asp-action="CrearParaDueno">Agregar Mascota</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Especie</th>
+            <th>Raza</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mascota in Model)
+        {
+            <tr>
+                <td>@mascota.Nombre</td>
+                <td>@mascota.Especie</td>
+                <td>@mascota.Raza</td>
+                <td>
+                    <a asp-action="Detalles" asp-route-id="@mascota.Id" class="btn btn-info">Detalles</a>
+                    <a asp-action="HistoriaClinica" asp-route-id="@mascota.Id" class="btn btn-secondary">Historia Clínica</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @for (int i = 1; i <= (int)ViewBag.TotalPaginas; i++)
+        {
+            <li class="page-item @(i == (int)ViewBag.PaginaActual ? "active" : "")">
+                <a class="page-link" asp-action="MisMascotas" asp-route-pagina="@i">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
+

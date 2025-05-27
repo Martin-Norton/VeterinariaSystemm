@@ -1,0 +1,32 @@
+@model VeterinariaSystem.Models.Veterinario
+@{
+    ViewData["Title"] = "Crear Veterinario";
+}
+<h1>Crear Veterinario</h1>
+
+<form asp-action="Crear">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Nombre"></label>
+        <input asp-for="Nombre" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Apellido"></label>
+        <input asp-for="Apellido" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DNI"></label>
+        <input asp-for="DNI" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Matricula"></label>
+        <input asp-for="Matricula" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>

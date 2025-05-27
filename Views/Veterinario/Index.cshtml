@@ -1,0 +1,58 @@
+@model IEnumerable<VeterinariaSystem.Models.Veterinario>
+@{
+    ViewData["Title"] = "Veterinarios";
+    var mensajeBusqueda = TempData["MensajeBusqueda"] as string;
+}
+
+<h1>Veterinarios</h1>
+
+@if (!string.IsNullOrEmpty(mensajeBusqueda))
+{
+    <div class="alert alert-info">@mensajeBusqueda</div>
+}
+
+<p>
+    <a class="btn btn-primary" asp-action="Crear">Agregar nuevo</a>
+    <a class="btn btn-outline-secondary" asp-action="BuscarPorDni">Buscar por DNI</a>
+    <a class="btn btn-outline-secondary" asp-action="BuscarPorMatricula">Buscar por Matrícula</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>DNI</th>
+            <th>Matrícula</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Nombre</td>
+        <td>@item.Apellido</td>
+        <td>@item.DNI</td>
+        <td>@item.Matricula</td>
+        <td>@item.Email</td>
+        <td>
+            <a class="btn btn-info btn-sm" asp-action="Detalles" asp-route-id="@item.Id">Detalles</a>
+            <a class="btn btn-warning btn-sm" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
+            <a class="btn btn-danger btn-sm" asp-action="Eliminar" asp-route-id="@item.Id">Eliminar</a>
+        </td>
+    </tr>
+}
+    </tbody>
+</table>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @for (int i = 1; i <= (int)ViewBag.TotalPaginas; i++)
+        {
+            <li class="page-item @(i == (int)ViewBag.PaginaActual ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-pagina="@i">@i</a>
+            </li>
+        }
+    </ul>
+</nav>

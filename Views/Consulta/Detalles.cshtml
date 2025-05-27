@@ -1,0 +1,51 @@
+@model VeterinariaSystem.Models.Consulta
+
+@{
+    ViewData["Title"] = "Detalles de Consulta";
+}
+
+<h2>Detalles de la Consulta</h2>
+
+<div class="card p-3">
+    <dl class="row">
+        <dt class="col-sm-3">Fecha</dt>
+        <dd class="col-sm-9">@Model.Fecha.ToShortDateString()</dd>
+
+        <dt class="col-sm-3">Motivo</dt>
+        <dd class="col-sm-9">@Model.Motivo</dd>
+
+        <dt class="col-sm-3">Diagnóstico</dt>
+        <dd class="col-sm-9">@Model.Diagnostico</dd>
+
+        <dt class="col-sm-3">Tratamiento</dt>
+        <dd class="col-sm-9">@Model.Tratamiento</dd>
+
+        <dt class="col-sm-3">Archivo Adjunto</dt>
+        <dd class="col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.ArchivoAdjunto))
+            {
+                <a href="@Url.Content("~/archivos/" + Model.ArchivoAdjunto)" target="_blank">Ver archivo</a>
+            }
+            else
+            {
+                <span>-</span>
+            }
+        </dd>
+
+        <dt class="col-sm-3">Mascota</dt>
+        <dd class="col-sm-9">@Model.Mascota.Nombre</dd>
+
+        <dt class="col-sm-3">Veterinario</dt>
+        <dd class="col-sm-9">@Model.Veterinario.Nombre, @Model.Veterinario.Apellido</dd>
+         @if (Model.Id_Turno.HasValue)
+            {
+                <dt class="col-sm-3">Turno Nº: </dt>
+                <dd class="col-sm-9">@Model.Id_Turno</dd>
+                <dt class="col-sm-3">Fecha del Turno</dt>
+                <dd class="col-sm-9">@Model.Fecha.ToShortDateString()</dd>
+            }
+
+    </dl>
+
+    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+</div>

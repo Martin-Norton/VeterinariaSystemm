@@ -1,0 +1,29 @@
+@model VeterinariaSystem.Models.LoginView
+@{
+    ViewData["Title"] = "Login";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+<link rel="stylesheet" href="~/css/Usuario/Login.css" />
+<h1>@ViewData["Title"]</h1>
+
+            <form asp-action="Login" asp-route-returnurl="@returnUrl" method="post" class="for">
+                <h4>Ingrese sus credenciales.</h4>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mb-3">
+                    <label asp-for="Usuario" class="control-label">Email</label>
+                    <input asp-for="Usuario" class="form-control" />
+                    <span asp-validation-for="Usuario" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Clave" class="control-label">Contraseña</label>
+                    <input asp-for="Clave" class="form-control" type="password" />
+                    <span asp-validation-for="Clave" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" class="bt">Ingresar</button>
+                </div>
+            </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

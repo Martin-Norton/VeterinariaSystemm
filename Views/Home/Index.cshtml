@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "SGV - Sistema de Gestión Veterinaria";
+}
+
+<div class="text-center">
+    @if (User.IsInRole("Administrador"))
+    {
+        <h1 class="display-4">Sistema de Gestión Veterinaria</h1>
+        <h2 class="display-4">Bienvenido Administrador</h2>
+        <p>Bienvenido al Sistema de Gestión Veterinaria. Use los siguientes enlaces para administrar las diferentes secciones del sistema.</p>
+        <a class="btn btn-primary" asp-controller="Dueno" asp-action="Index">Gestionar Dueños</a>
+        <a class="btn btn-primary" asp-controller="Veterinario" asp-action="Index">Gestionar Veterinarios</a>
+        <a class="btn btn-primary" asp-controller="Mascota" asp-action="Index">Gestionar Mascotas</a>
+        <a class="btn btn-primary" asp-controller="Turno" asp-action="Index">Gestionar Turnos</a>
+        <a class="btn btn-primary" asp-controller="Consulta" asp-action="Index">Gestionar Consultas</a>
+    }
+    else if (User.IsInRole("Veterinario"))
+    {
+        <h1 class="display-4">Sistema de Gestión Veterinaria</h1>
+        <h2 class="display-4">Bienvenido Veterinario</h2>
+         <p>Bienvenido al Sistema de Gestión Veterinaria.</p>
+        <a class="btn btn-primary" asp-controller="Dueno" asp-action="Index">Gestión de Dueños de Mascotas</a>
+        <a class="btn btn-primary" asp-controller="Mascota" asp-action="Index">Gestionar Mascotas</a>
+        <a class="btn btn-primary" asp-controller="Consulta" asp-action="Index">Gestionar Consultas</a>
+        <a class="btn btn-primary" asp-controller="Turno" asp-action="Index">Ver/Buscar Turnos</a>    
+    }else if (User.IsInRole("Dueno"))
+    {
+        <h1 class="display-4">Sistema de Gestión Veterinaria</h1>
+        <h2 class="display-4">Bienvenido Dueño</h2>
+        <p>Bienvenido al Sistema de Gestión Veterinaria.</p>
+        <a class="btn btn-primary" asp-controller="Mascota" asp-action="MisMascotas">Gestionar Mis Mascotas</a>
+        <a class="btn btn-primary" asp-controller="Turno" asp-action="Crear">Sacar nuevo turno</a>    
+        <a class="btn btn-primary" asp-controller="Turno" asp-action="BuscarPorMascota">Buscar los turnos de mis mascotas</a>
+    }
+    else
+    {        
+        <h1 class="display-4">Sistema de Gestión Veterinaria</h1>
+        <h2 class="display-4">Bienvenido</h2>
+        <p>Por favor, inicie sesión para acceder a las funcionalidades del sistema.</p>
+        <p> Si sos Dueño de uno de nuestros clientes, podes crear tu cuenta aca.</p>
+        <a class="btn btn-primary" asp-controller="Usuarios" asp-action="BuscarDuenoPorDni">Crear Usuario</a>
+    }
+</div>

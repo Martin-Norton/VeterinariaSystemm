@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Buscar Dueño por DNI";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="app" v-cloak>
+    <h2>Buscar Dueño por DNI</h2>
+
+    <div class="form-group">
+        <label for="dni">DNI</label>
+        <input type="number" v-model="dni" id="dni" class="form-control" required />
+    </div>
+    <button class="btn btn-primary mt-2" @@click="buscarDueno">Buscar</button>
+
+    <div v-if="mensaje" class="alert alert-warning mt-3">{{ mensaje }}</div>
+
+    <div v-if="dueno" class="mt-4">
+        <h4>Resultado:</h4>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>Nombre:</strong> {{ dueno.nombre }}</li>
+            <li class="list-group-item"><strong>Apellido:</strong> {{ dueno.apellido }}</li>
+            <li class="list-group-item"><strong>DNI:</strong> {{ dueno.dni }}</li>
+            <li class="list-group-item"><strong>Teléfono:</strong> {{ dueno.telefono }}</li>
+            <li class="list-group-item"><strong>Email:</strong> {{ dueno.email }}</li>
+        </ul>
+        
+    <div class="mt-3">
+        <a :href="'/Dueno/Detalles/' + dueno.id" class="btn btn-info btn-sm">Detalles</a>
+        <a v-if="esAdmin" :href="'/Dueno/Editar/' + dueno.id" class="btn btn-warning btn-sm">Editar</a>
+        <a v-if="esAdmin" :href="'/Dueno/Eliminar/' + dueno.id" class="btn btn-danger btn-sm">Eliminar</a>
+    </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            dni: '',
+            dueno: null,
+            mensaje: '',
+            esAdmin: @User.IsInRole("Administrador").ToString().ToLower()
+        },
+        methods: {
+            buscarDueno() {
+                if (!this.dni) {
+                    this.mensaje = 'Debe ingresar un DNI.';
+                    this.dueno = null;
+                    return;
+                }
+
+                axios.get(`/api/dueno/dni/${this.dni}`)
+                    .then(res => {
+                        if (res.data) {
+                            this.dueno = res.data;
+                            this.mensaje = '';
+                        } else {
+                            this.dueno = null;
+                            this.mensaje = 'Dueño no encontrado.';
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        this.dueno = null;
+                        this.mensaje = 'Error al buscar el dueño.';
+                    });
+            }
+        }
+    });
+</script>
+}
+
+<style>
+    [v-cloak] { display: none; }
+</style>

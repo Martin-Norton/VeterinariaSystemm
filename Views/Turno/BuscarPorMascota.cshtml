@@ -1,0 +1,63 @@
+@model IEnumerable<VeterinariaSystem.Models.Turno>
+
+@{
+    ViewData["Title"] = "Buscar Turnos por Mascota";
+}
+
+<h2>Buscar Turnos por Mascota</h2>
+
+<form method="get">
+    <div class="form-group">
+        <label for="idMascota">Seleccionar Mascota:</label>
+        @Html.DropDownList("idMascota", (IEnumerable<SelectListItem>)ViewBag.Mascotas, "Seleccione una mascota", new { @class = "form-control" })
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+
+@if (Model.Any())
+{
+    <h3>@ViewBag.Mensaje</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Id)</th>
+                <th>@Html.DisplayNameFor(model => model.Mascota.Nombre)</th>
+                <th>@Html.DisplayNameFor(model => model.Motivo)</th>
+                <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+                <th>@Html.DisplayNameFor(model => model.Hora)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var turno in Model)
+            {
+                <tr>
+                    <td>@turno.Id</td>
+                    <td>@turno.Mascota.Nombre</td>
+                    <td>@turno.Motivo</td>
+                    <td>@turno.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@turno.Hora.ToString(@"hh\:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontraron turnos para esta mascota hoy.</p>
+}
+<div class="mt-4">
+    <nav>
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+            {
+                <li class="page-item @(i == ViewBag.Pagina ? "active" : "")">
+                    @if(User.IsInRole("Veterinario")|| User.IsInRole("Administrador")){
+                        <a class="page-link" asp-action="Index" asp-route-pagina="@i">@i</a>
+                    }else{
+                        <a class="page-link" asp-controller="Mascota" asp-action="MisMascotas" asp-route-pagina="@i">@i</a>
+                    }
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

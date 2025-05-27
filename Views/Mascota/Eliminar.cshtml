@@ -1,0 +1,25 @@
+@model Mascota
+@{
+    ViewData["Title"] = "Eliminar Mascota";
+}
+
+<h2>¿Estás seguro de eliminar esta mascota?</h2>
+
+<div class="mb-3">
+    <strong>Nombre:</strong> @Model.Nombre
+</div>
+<div class="mb-3">
+    <strong>Especie:</strong> @Model.Especie
+</div>
+<div class="mb-3">
+    <strong>Raza:</strong> @Model.Raza
+</div>
+<div class="mb-3">
+    <strong>Dueño:</strong> @Model.Dueno?.Nombre, @Model.Dueno?.Apellido
+</div>
+
+<form asp-action="Eliminar" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

@@ -1,0 +1,97 @@
+@model VeterinariaSystem.Models.Consulta
+
+@{
+    ViewData["Title"] = "Crear Consulta";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Crear" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Fecha" class="control-label"></label>
+        <input asp-for="Fecha" class="form-control" type="date" />
+        <span asp-validation-for="Fecha" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Motivo" class="control-label"></label>
+        <textarea asp-for="Motivo" class="form-control"></textarea>
+        <span asp-validation-for="Motivo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Diagnostico" class="control-label"></label>
+        <textarea asp-for="Diagnostico" class="form-control"></textarea>
+        <span asp-validation-for="Diagnostico" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Tratamiento" class="control-label"></label>
+        <textarea asp-for="Tratamiento" class="form-control"></textarea>
+        <span asp-validation-for="Tratamiento" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ArchivoAdjunto" class="control-label"></label>
+        <input  name="Archivo" asp-for="ArchivoAdjunto" class="form-control" type="file" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label"></label>
+        <select class="form-control" id="Id_Dueno">
+            <option value="">Seleccione un dueño</option>
+            @foreach (var item in ViewBag.Duenos as SelectList)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Id_Mascota" class="control-label"> Mascota </label>
+        <select asp-for="Id_Mascota" class="form-control" id="Id_Mascota">
+            <option value="">Seleccione una mascota</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Id_Veterinario" class="control-label">Veterinario</label>
+        <select asp-for="Id_Veterinario" class="form-control" asp-items="ViewBag.Veterinarios">
+            <option value="">Seleccione un veterinario</option>
+        </select>
+        <span asp-validation-for="Id_Veterinario" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Crear Consulta</button>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</div>
+
+@section Scripts {
+    
+    <script>
+        $("#Id_Dueno").change(function() {
+            var idDueno = $(this).val();
+            if (idDueno) {
+                $.ajax({
+                    url: '@Url.Action("ObtenerMascotasPorDueno", "Consulta")',
+                    data: { idDueno: idDueno },
+                    success: function(data) {
+                        var mascotaSelect = $("#Id_Mascota");
+                        mascotaSelect.empty();
+                        mascotaSelect.append('<option value="">Seleccione una mascota</option>');
+                        $.each(data, function(i, item) {
+                            mascotaSelect.append('<option value="' + item.id + '">' + item.nombre + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $("#Id_Mascota").empty().append('<option value="">Seleccione una mascota</option>');
+            }
+        });
+    </script>
+}

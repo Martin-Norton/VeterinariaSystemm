@@ -1,0 +1,77 @@
+@model VeterinariaSystem.Models.Consulta
+
+@{
+    ViewData["Title"] = "Editar Consulta";
+}
+
+<h2>Editar Consulta</h2>
+
+<form asp-action="Editar" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Fecha" class="control-label"></label>
+        <input asp-for="Fecha" class="form-control" type="date" />
+        <span asp-validation-for="Fecha" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Motivo" class="control-label"></label>
+        <input asp-for="Motivo" class="form-control" />
+        <span asp-validation-for="Motivo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Diagnostico" class="control-label"></label>
+        <textarea asp-for="Diagnostico" class="form-control"></textarea>
+        <span asp-validation-for="Diagnostico" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Tratamiento" class="control-label"></label>
+        <textarea asp-for="Tratamiento" class="form-control"></textarea>
+        <span asp-validation-for="Tratamiento" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="ArchivoNuevo">Archivo Adjunto (opcional)</label>
+        <input type="hidden" asp-for="ArchivoAdjunto" />
+        <input type="file" name="ArchivoNuevo" class="form-control" />
+        @if (!string.IsNullOrEmpty(Model.ArchivoAdjunto))
+        {
+            <p>Archivo actual: <a href="@Url.Content("~/archivos/" + Model.ArchivoAdjunto)" target="_blank">@Model.ArchivoAdjunto</a></p>
+        }
+    </div>
+
+    <div class="form-group">
+        <label>Mascota</label>
+
+        <input type="hidden" asp-for="Id_Mascota" />
+
+        <input class="form-control" value="@Model.Mascota?.Nombre" readonly />
+    </div>
+
+    <div class="form-group">
+        <label>Veterinario</label>
+
+        <input type="hidden" asp-for="Id_Veterinario" />
+
+        <input class="form-control" value="@($"{Model.Veterinario?.Nombre} {Model.Veterinario?.Apellido}")" readonly />
+    </div>
+
+    @if (Model.Id_Turno.HasValue)
+    {
+        <div class="form-group">
+            <label>Turno Nº</label>
+            <input type="hidden" asp-for="Id_Turno" />
+            <input class="form-control" value="@Model.Id_Turno" readonly />
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

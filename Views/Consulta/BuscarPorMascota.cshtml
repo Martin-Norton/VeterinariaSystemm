@@ -1,0 +1,107 @@
+@model IList<VeterinariaSystem.Models.Consulta>
+
+@{
+    ViewData["Title"] = "Buscar consultas por mascota";
+}
+
+<h2>Buscar consultas por mascota</h2>
+
+<form method="get" asp-action="BuscarPorMascota">
+    <div class="form-group">
+        <label for="Id_Dueno">Dueño</label>
+        <select id="Id_Dueno" name="idDueno" class="form-control" asp-items="ViewBag.Duenos">
+            <option value="">Seleccione un dueño</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="Id_Mascota">Mascota</label>
+        <select id="Id_Mascota" name="idMascota" class="form-control" asp-items="ViewBag.Mascotas">
+            <option value="">Seleccione una mascota</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th>Fecha</th>
+                <th>Motivo</th>
+                <th>Diagnóstico</th>
+                <th>Tratamiento</th>
+                <th>Veterinario</th>
+                <th>Archivo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var consulta in Model)
+            {
+                <tr>
+                    <td>@consulta.Fecha.ToShortDateString()</td>
+                    <td>@consulta.Motivo</td>
+                    <td>@consulta.Diagnostico</td>
+                    <td>@consulta.Tratamiento</td>
+                    <td>@consulta.Veterinario.Nombre @consulta.Veterinario.Apellido</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(consulta.ArchivoAdjunto))
+                        {
+                            <a href="@Url.Content(consulta.ArchivoAdjunto)" target="_blank">Ver archivo</a>
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Detalles" asp-route-id="@consulta.Id" class="btn btn-info btn-sm">Detalles</a>
+                        <a asp-action="Editar" asp-route-id="@consulta.Id" class="btn btn-warning btn-sm">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="mt-4">
+        <nav>
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+                {
+                    <li class="page-item @(i == ViewBag.Pagina ? "active" : "")">
+                        <a class="page-link"
+                           asp-action="BuscarPorMascota"
+                           asp-route-idDueno="@ViewBag.IdDuenoSeleccionado"
+                           asp-route-idMascota="@ViewBag.IdMascotaSeleccionada"
+                           asp-route-pagina="@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $("#Id_Dueno").change(function () {
+            var idDueno = $(this).val();
+            if (idDueno) {
+                $.ajax({
+                    url: '@Url.Action("ObtenerMascotasPorDueno", "Consulta")',
+                    data: { idDueno: idDueno },
+                    success: function (data) {
+                        var mascotaSelect = $("#Id_Mascota");
+                        mascotaSelect.empty();
+                        mascotaSelect.append('<option value="">Seleccione una mascota</option>');
+                        $.each(data, function (i, item) {
+                            mascotaSelect.append('<option value="' + item.id + '">' + item.nombre + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $("#Id_Mascota").empty().append('<option value="">Seleccione una mascota</option>');
+            }
+        });
+    </script>
+}

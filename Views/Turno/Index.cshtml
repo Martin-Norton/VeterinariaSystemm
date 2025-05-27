@@ -1,0 +1,63 @@
+@model IEnumerable<VeterinariaSystem.Models.Turno>
+
+@{
+    ViewData["Title"] = "Turnos";
+}
+
+<h2>Turnos</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Mascota.Nombre)</th>
+            <th>@Html.DisplayNameFor(model => model.Motivo)</th>
+            <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+            <th>@Html.DisplayNameFor(model => model.Hora)</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var turno in Model)
+        {
+            <tr>
+                <td>@turno.Id</td>
+                <td>@turno.Mascota.Nombre</td>
+                <td>@turno.Motivo</td>
+                <td>@turno.Fecha.ToString("dd/MM/yyyy")</td>
+                <td>@turno.Hora.ToString(@"hh\:mm")</td>
+                <td>
+                    <a href="@Url.Action("Detalles", "Turno", new { id = turno.Id })">Detalles</a> 
+                    @if (User.IsInRole("Administrador")|| User.IsInRole("Dueno"))
+                    {
+                        <a href="@Url.Action("Eliminar", "Turno", new { id = turno.Id })">Eliminar</a>
+                        <a href="@Url.Action("Editar", "Turno", new { id = turno.Id })">Editar</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a href="@Url.Action("Crear", "Turno")" class="btn btn-info btn-sm">Crear nuevo</a>
+    <a href="@Url.Action("BuscarPorFecha")" class="btn btn-info btn-sm">Buscar Turnos por fecha</a>
+    <a href="@Url.Action("BuscarPorMascota")" class="btn btn-info btn-sm">Buscar Turnos por Mascota</a>
+</div>
+@if (User.IsInRole("Dueno"))
+    {
+        <div>
+            <a href="@Url.Action("BuscarPorDueno")" class="btn btn-info btn-sm">Buscar Turnos por Dueño</a>
+        </div>
+    }
+<div class="mt-4">
+    <nav>
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+            {
+                <li class="page-item @(i == ViewBag.Pagina ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-pagina="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

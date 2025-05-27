@@ -1,0 +1,91 @@
+
+@{
+    ViewData["Title"] = "Dueños";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="app" v-cloak>
+    <h2>Dueños</h2>
+
+    <a href="/Dueno/Buscar" class="btn btn-primary mb-2">Buscar Dueños</a>
+    <a href="/Dueno/Crear" class="btn btn-primary mb-2">Nuevo Dueño</a>
+
+    <div v-if="duenos.length">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="d in duenos" :key="d.id">
+                    <td>{{ d.dni }}</td>
+                    <td>{{ d.nombre }}</td>
+                    <td>{{ d.apellido }}</td>
+                    <td>{{ d.email }}</td>
+                    <td>{{ d.telefono }}</td>
+                    <td>
+                        <a :href="'/Dueno/Detalles/' + d.id" class="btn btn-info btn-sm">Detalles</a>
+                        <a v-if="esAdmin" :href="'/Dueno/Editar/' + d.id" class="btn btn-warning btn-sm">Editar</a>
+                        <a v-if="esAdmin" :href="'/Dueno/Eliminar/' + d.id" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" v-for="p in totalPaginas" :class="{ active: p === paginaActual }" :key="p">
+                    <a class="page-link" href="#" @@click.prevent="cambiarPagina(p)">{{ p }}</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div v-else>
+        <p>Cargando dueños...</p>
+    </div>
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            duenos: [],
+            paginaActual: 1,
+            totalPaginas: 1,
+            esAdmin: @User.IsInRole("Administrador").ToString().ToLower()
+        },
+        created() {
+            this.obtenerDuenos();
+        },
+        methods: {
+            obtenerDuenos() {
+                axios.get(`/api/dueno/pagina/${this.paginaActual}`)
+                    .then(res => {
+                        this.duenos = res.data.duenos;
+                        this.totalPaginas = res.data.totalPaginas;
+                    })
+                    .catch(err => console.error('Error al obtener los dueños', err));
+            },
+            cambiarPagina(p) {
+                if (p !== this.paginaActual) {
+                    this.paginaActual = p;
+                    this.obtenerDuenos();
+                }
+            }
+        }
+    });
+</script>
+}
+
+<style>
+    [v-cloak] { display: none; }
+</style>
